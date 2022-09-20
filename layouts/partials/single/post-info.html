@@ -11,3 +11,20 @@
         <span>{{ i18n "on" }}&nbsp;</span><time datetime="{{ .PublishDate }}">{{ i18n "publishdate" . }}</time>
     {{- end }}
 </div>
+{{ if .Params.tags}}
+<div class="post-info">
+    <span>
+    Tags: 
+    
+    {{ with .Params.tags}}
+    {{ range first 1 . }}
+    <a href="{{ $.Site.BaseURL }}tags/{{ . | urlize }}">{{ . }}</a>
+    {{ end }}
+    {{ range after 1 .}}
+    , <a href="{{ $.Site.BaseURL }}tags/{{ . | urlize }}">{{ . }}</a>
+    {{ end }}
+    {{end}}
+        
+    </span>
+</div>
+{{end}}
