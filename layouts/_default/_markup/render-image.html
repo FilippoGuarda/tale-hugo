@@ -1,8 +1,47 @@
-{{ if .Title }}
-  <figure>
-    <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}">
-    <em><figcaption>{{ .Title }}</figcaption></em>
-  </figure>
-{{ else }}
-  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}">
-{{ end }}
+{{- $image := .Page.Resources.GetMatch .Destination -}}
+{{- if not $image -}}
+  {{- $image = resources.Get .Destination -}}
+{{- end -}}
+
+{{- if $image -}}
+  {{- $colorPalette := slice 
+    "000000"
+    "954535"
+    "BA160C"
+    "FF8F00"
+    "ffd800"
+    "3B5336"
+    "4a6b6b"
+    "7a8450"
+    "567a9d"
+    "5d6b8c"
+    "6d5d7a"
+    "7a5d6d"
+    "8c6d6d"
+    "ffffff"
+  -}}
+  
+  {{- $opt := dict
+    "colors" $colorPalette
+    "method" "FalseFloydSteinberg"
+    "strength" 1.0
+  -}}
+  
+  {{- $filters := slice
+    (images.Dither $opt)
+    (images.Process "png")
+  -}}
+  
+  {{- with $image | images.Filter $filters -}}
+    {{- if $.Title -}}
+      <figure>
+        <img src="{{ .RelPermalink }}" alt="{{ $.PlainText }}">
+        <em><figcaption>{{ $.Title }}</figcaption></em>
+      </figure>
+    {{- else -}}
+      <img src="{{ .RelPermalink }}" alt="{{ $.PlainText }}">
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  <img src="{{ .Destination | safeURL }}" alt="{{ .PlainText }}">
+{{- end -}}
