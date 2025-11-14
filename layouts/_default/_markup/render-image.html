@@ -28,6 +28,7 @@
   -}}
   
   {{- $filters := slice
+    (images.Process "resize 800x")
     (images.Dither $opt)
     (images.Process "png")
   -}}
