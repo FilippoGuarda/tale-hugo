@@ -35,10 +35,11 @@
   
   {{- with $image | images.Filter $filters -}}
     {{- if $.Title -}}
-      <figure>
-        <img src="{{ .RelPermalink }}" alt="{{ $.PlainText }}">
-        <em><figcaption>{{ $.Title }}</figcaption></em>
-      </figure>
+     <figure>
+    <img src="{{ .RelPermalink }}" 
+    style="max-width: 100%; height: auto; border: none;"
+    alt="{{ $.PlainText }}">
+    <em><figcaption>{{ $.Title }}</figcaption></em>
     {{- else -}}
       <img src="{{ .RelPermalink }}" alt="{{ $.PlainText }}">
     {{- end -}}
