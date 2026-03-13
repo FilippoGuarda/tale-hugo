@@ -4,32 +4,36 @@
 {{- end -}}
 
 {{- if $image -}}
+  {{ $sorted := sort $image.Colors "Luminance" }}
+  {{ $dark  := index $sorted 0 }}
+  {{ $light := index (sort $image.Colors "Luminance" "desc") 0 }}
+
   {{- $colorPalette := slice 
-    "000000"
-    "954535"
-    "BA160C"
-    "FF8F00"
-    "ffd800"
-    "3B5336"
-    "4a6b6b"
-    "7a8450"
-    "567a9d"
-    "5d6b8c"
-    "6d5d7a"
-    "7a5d6d"
-    "8c6d6d"
-    "fed2b5"
-    "ffffff"
+      "000000"
+      "954535"
+      "BA160C"
+      "FF8F00"
+      "ffd800"
+      "3B5336"
+      "4a6b6b"
+      "7a8450"
+      "567a9d"
+      "5d6b8c"
+      "6d5d7a"
+      "7a5d6d"
+      "8c6d6d"
+      "fed2b5"
+      "ffffff"
   -}}
   
   {{- $opt := dict
     "colors" $colorPalette
     "method" "FalseFloydSteinberg"
-    "strength" 1.0
+    "strength" 1.1
   -}}
   
   {{- $filters := slice
-    (images.Process "resize 800x")
+    (images.Process "resize 1200x")
     (images.Dither $opt)
     (images.Process "png")
   -}}
@@ -47,5 +51,5 @@
     {{- end -}}
   {{- end -}}
 {{- else -}}
-  <img src="{{ .Destination | safeURL }}" alt="{{ .PlainText }}">
+  <img src="{{ .Destination | safeURL }}" alt="{{ $.PlainText }}">
 {{- end -}}
